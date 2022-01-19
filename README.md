@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The React Load plugin provides auto-instrumentation for react lifecycle methods.
+This example uses the plugin and exports them to the console.
 
-## Available Scripts
+The example will show traces belong to the mounting, updating, and umounting flows as defined by React 16.4+.
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+```sh
+# from this directory
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Run the example
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Run docker
 
-### `npm test`
+```sh
+# from this directory
+npm run docker:start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run app
 
-### `npm run build`
+```sh
+# from this directory
+npm run build
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+By default, the application runs on port 3000.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open Zipkin page at <http://localhost:9411/zipkin/> - you should be able to see the spans in zipkin
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Screenshots of traces
 
-### `npm run eject`
+Take note of the parent-child relationships.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### First load
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Upon loading, <http://localhost:3000> mounting spans will be exported
+<p align="center"><img src="./images/mounting.png?raw=true"/></p>
+<p align="center"><img src="./images/zipkin-mounting.png?raw=true"/></p>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Pressing 'Enter'
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Here we can see the previous component unmounting and the new component mounting.
+<p align="center"><img src="./images/redirect.png?raw=true"/></p>
+<p align="center"><img src="./images/zipkin-redirect.png?raw=true"/></p>
+<p align="center"><img src="./images/zipkin-redirect2.png?raw=true"/></p>
 
-## Learn More
+### Pressing 'Make Request'
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+While in loading state:
+<p align="center"><img src="./images/updating.png?raw=true"/></p>
+<p align="center"><img src="./images/zipkin-updating.png?raw=true"/></p>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+After a few seconds (when the request is fulfilled):
+<p align="center"><img src="./images/updating2.png?raw=true"/></p>
+<p align="center"><img src="./images/zipkin-updating2.png?raw=true"/></p>
 
-### Code Splitting
+Since the example adds in a delay to the request, we can see that reflected in the duration of some spans:
+<p align="center"><img src="./images/duration.png?raw=true"/></p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Useful links
 
-### Analyzing the Bundle Size
+- For more information on OpenTelemetry, visit: [opentelemetry.io][otel]
+- For more information on OpenTelemetry for Node.js, visit: [@opentelemetry/sdk-trace-node][otel-node]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## LICENSE
 
-### Making a Progressive Web App
+Apache 2.0 - See [LICENSE][license-url] for more information.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[license-url]: https://github.com/open-telemetry/opentelemetry-js-contrib/blob/main/LICENSE
+[otel]: https://opentelemetry.io/
+[otel-node]: https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-node

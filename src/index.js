@@ -1,17 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+
+import Home from "./components/Home"
+import About from "./components/About"
+import Topics from "./components/Topics"
+
+import Tracer from './web-tracer.js';
+
+Tracer('example-react-load')
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Router>
+      
+      <div>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/topics">Topics</Link></li>
+        </ul>
+        <hr />
+
+        <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/topics" element={<Topics />} />
+        </Routes>
+      </div>
+      
+    </Router>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
